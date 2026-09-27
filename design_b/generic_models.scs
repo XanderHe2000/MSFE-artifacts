@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: CERN-OHL-P-2.0
+// Licensed under CERN Open Hardware Licence Version 2 - Permissive.
+// See ../LICENSE.
+// Public generic stand-ins; not calibrated to any foundry process.
+simulator lang=spectre
+
+model NMOS_GENERIC nmos level=1 vto=0.45 kp=100u gamma=0.4 lambda=0.02
+model NMOS_LVT_GENERIC nmos level=1 vto=0.35 kp=100u gamma=0.4 lambda=0.02
+model PMOS_GENERIC pmos level=1 vto=-0.45 kp=50u gamma=0.4 lambda=0.02
+model PMOS_LVT_GENERIC pmos level=1 vto=-0.35 kp=50u gamma=0.4 lambda=0.02
+
+subckt MOMCAP_GENERIC PLUS MINUS
+parameters c_nom=1p
+C_VALUE (PLUS MINUS) capacitor c=c_nom
+ends MOMCAP_GENERIC
+
+subckt DECAP_GENERIC VDD VSS
+C_DECAP (VDD VSS) capacitor c=1p
+ends DECAP_GENERIC
+
+subckt INV_GENERIC_X1 A Y VDD VSS
+M_P (Y A VDD VDD) PMOS_GENERIC l=100n w=2u
+M_N (Y A VSS VSS) NMOS_GENERIC l=100n w=1u
+ends INV_GENERIC_X1
+
+subckt INV_GENERIC_X2 A Y VDD VSS
+M_P (Y A VDD VDD) PMOS_GENERIC l=100n w=4u
+M_N (Y A VSS VSS) NMOS_GENERIC l=100n w=2u
+ends INV_GENERIC_X2
+
+subckt INV_GENERIC_X4 A Y VDD VSS
+M_P (Y A VDD VDD) PMOS_GENERIC l=100n w=8u
+M_N (Y A VSS VSS) NMOS_GENERIC l=100n w=4u
+ends INV_GENERIC_X4
